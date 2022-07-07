@@ -1,50 +1,31 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
-Set repository:
-```{r}
 library(ggplot2)
-#setwd("../meisam_yousefi/OneDrive - National University of Singapore/Lab_Meisam/Results/Scripts/DENV-TMEM-VMP")
-```
-Read data:
-```{r}
+setwd("../Results/Scripts/DENV-TMEM-VMP")
+
+###Read data:
+
 Metabolome <- read.csv(file ="MetabolitesRaw.csv",header = T,quote="")
 Metabolome <- Metabolome[,1:10]
 Metabolome_mat <- as.matrix(Metabolome[,-1])
 class(Metabolome_mat) <- "numeric"
-#row.names(Metabolome) <- Metabolome[,1]
-#Metabolome <- Metabolome[,-1]
-```
-PCA:
-```{r}
+row.names(Metabolome) <- Metabolome[,1]
+Metabolome <- Metabolome[,-1]
+
+###PCA:
+
 PCAmet <- prcomp(Metabolome_mat)
 PCArot <- data.frame(PCAmet$rotation)
 PCArot$Group <- c("WT","WT","WT","TMEM41B KO","TMEM41B KO","TMEM41B KO","VMP1 KO","VMP1 KO","VMP1 KO")
-#Summary(PCAmet)
-```
-Plotting:
-```{r}
+Summary(PCAmet)
 ggplot(PCArot, aes(PC1,PC2,color=Group)) + geom_point(size=4) + theme_bw()
-```
-LFC Plots:
 
-Read data:
-```{r}
+###LFC Plots:
+
 Metabolome <- read.csv(file ="MetabolitesRaw.csv",header = T,quote="")
 Metabolome <- Metabolome[,c(1,13,14)]
 row.names(Metabolome) <- Metabolome[,1]
 Metabolome <- Metabolome[,-1]
 Metabolome$Group <- c(rep("FA",12),rep("TG",27),rep("Sphingolipids",7),rep("Glycerophospholipids",22),rep("Diacylglycerol",6),rep("Acylcarnitine",13))
-```
 plotting for LFC TMEM vs WT:
-```{r}
 ggplot(data = Metabolome, aes(Group,FC_TMEM41BKO_vs_WT, color=Group)) + geom_boxplot() + geom_point() + theme_classic()
-```
 plotting for LFC VMP vs WT:
-```{r}
 ggplot(data = Metabolome, aes(Group,FC_VMP1KO_vs_WT, color=Group)) + geom_boxplot() + geom_point() + theme_classic()
-```
-
-
