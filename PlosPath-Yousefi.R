@@ -14,7 +14,7 @@ Metabolome <- Metabolome[,-1]
 
 PCAmet <- prcomp(Metabolome_mat)
 PCArot <- data.frame(PCAmet$rotation)
-PCArot$Group <- c("WT","WT","WT","TMEM41B KO","TMEM41B KO","TMEM41B KO","VMP1 KO","VMP1 KO","VMP1 KO")
+PCArot$Group <- c(rep("WT",3),rep("TMEM41B KO",3),rep("VMP1 KO",3))
 Summary(PCAmet)
 ggplot(PCArot, aes(PC1,PC2,color=Group)) + geom_point(size=4) + theme_bw()
 
